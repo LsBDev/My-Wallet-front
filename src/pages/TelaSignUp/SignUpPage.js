@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
-import MyWalletLogo from "../components/MyWalletLogo"
+import MyWalletLogo from "../../components/MyWalletLogo.jsx"
 import { useState } from "react";
 import axios from "axios";
 
@@ -8,21 +8,24 @@ export default function SignUpPage() {
   const [email, setEmail] = useState();
   const [name, setName] = useState();
   const [password, setPassword] = useState();
-  const [newPassword, setNewPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
   const [disabled, setDisabled] = useState(false);
+  const navigate = useNavigate;
 
 
   function register(event) {
     event.preventDefault();
     setDisabled(true);
-    const dataSingUp = {email: email, name: name, password: password, newPassword: newPassword}
+    const dataSingUp = {email: email, name: name, password: password, confirmPassword: confirmPassword}
     axios.post("url aqui", dataSingUp)
       .then((res) => {
         console.log(res.data);
         setDisabled(false);
+        navigate("/");
       })
       .catch((err) => {
-        console.log(err.response.data)
+        console.log(err.response.data);
+        setDisabled(false);
       })
   }
 
@@ -33,7 +36,7 @@ export default function SignUpPage() {
         <input placeholder="Nome" type="text" value={name} onChange={e => setName(e.target.value)} disabled={disabled} required />
         <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} disabled={disabled} required/>
         <input placeholder="Senha" type="password" value={password} autocomplete="new-password" onChange={e => setPassword(e.target.value)} disabled={disabled} required />
-        <input placeholder="Confirme a senha" type="password" value={newPassword} autocomplete="new-password"  onChange={e => setNewPassword(e.target.value)} disabled={disabled} required />
+        <input placeholder="Confirme a senha" type="password" value={confirmPassword} autocomplete="new-password"  onChange={e => setConfirmPassword(e.target.value)} disabled={disabled} required />
         <button type="submit">Cadastrar</button>
       </form>
 

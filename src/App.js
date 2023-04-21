@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import styled from "styled-components"
-import HomePage from "./pages/HomePage"
-import SignInPage from "./pages/SignInPage"
-import SignUpPage from "./pages/SignUpPage"
-import TransactionsPage from "./pages/TransactionPage"
+import HomePage from "./pages/TelaHome/HomePage"
+import SignInPage from "./pages/TelaSignIn/SignInPage.js"
+import SignUpPage from "./pages/TelaSignUp/SignUpPage.js"
+import TransactionsPage from "./pages/TelaTransaction/TransactionPage.js"
 
 export default function App() {
   return (
