@@ -1,11 +1,25 @@
 import styled from "styled-components"
 import { BiExit } from "react-icons/bi"
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
-import { useState } from "react"
-
+import { useContext, useEffect, useState } from "react"
 import TransactionContainer from "./TransactionContainer.jsx"
+import AuthContext from "../../contexts/AuthContext.js"
+import axios from "axios"
 
 export default function HomePage() {
+  const {token} = useContext(AuthContext);
+  const [transacoes, setTransacoes] = useState();
+
+
+  useEffect(() => {
+    const URL = "https://localhost:27017/mywallet/home";
+    const config = {
+      headers: {Authorization: `Bearer ${token}`}
+    };
+    axios.get(URL, config)
+      .then(res => setTransacoes(res.data))
+      .catch(err => console.log(err.response.data))
+  }, [])
 
 
   // const valueList = transactions.map((op) => parseInt(op.value))
@@ -13,8 +27,6 @@ export default function HomePage() {
   // for(let i = 0; i < valueList.length; i++) {
   //   soma = soma + valueList[i];
   // }
-
-
 
 
   return (

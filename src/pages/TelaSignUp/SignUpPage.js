@@ -15,9 +15,13 @@ export default function SignUpPage() {
 
   function register(event) {
     event.preventDefault();
+    if(password !== confirmPassword) {
+      return alert("Senhas não conferem!");
+    }
+
     setDisabled(true);
     const dataSingUp = {email: email, name: name, password: password, confirmPassword: confirmPassword}
-    axios.post("url aqui", dataSingUp)
+    axios.post("https://localhost:27017/mywallet/singUp", dataSingUp)
       .then((res) => {
         console.log(res.data);
         setDisabled(false);

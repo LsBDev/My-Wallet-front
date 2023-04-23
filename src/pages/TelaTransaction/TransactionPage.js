@@ -1,6 +1,14 @@
-import styled from "styled-components"
+import styled from "styled-components";
+import dayjs from "dayjs";
 
 export default function TransactionsPage() {
+const dados = {
+  value: "valor",
+  description: "description",
+  day: dayjs().format("DD"/"MM") // setar os dados aqui e usar na tela de mostrar transacoes (usar context)
+}
+
+
   return (
     <TransactionsContainer>
       <h1>Nova TRANSAÇÃO</h1>

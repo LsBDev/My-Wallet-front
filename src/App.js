@@ -4,19 +4,31 @@ import HomePage from "./pages/TelaHome/HomePage"
 import SignInPage from "./pages/TelaSignIn/SignInPage.js"
 import SignUpPage from "./pages/TelaSignUp/SignUpPage.js"
 import TransactionsPage from "./pages/TelaTransaction/TransactionPage.js"
+import { useState } from "react"
+import AuthContext from "./contexts/AuthContext"
+import UserContext from "./contexts/UserContext"
 
 export default function App() {
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState();
+  // o usuário tb por contexto e qq outra coisa necessária
+  
+
   return (
-    <PagesContainer>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SignInPage />} />
-          <Route path="/cadastro" element={<SignUpPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </PagesContainer>
+    <AuthContext.Provider value={{ token, setToken }}>
+      <UserContext.Provider value={{user, setUser}}> 
+        <PagesContainer>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<SignInPage />} />
+              <Route path="/cadastro" element={<SignUpPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/nova-transacao/:tipo" element={<TransactionsPage />} />
+            </Routes>
+          </BrowserRouter>
+        </PagesContainer>
+      </UserContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
