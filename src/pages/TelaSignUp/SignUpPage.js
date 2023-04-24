@@ -21,7 +21,7 @@ export default function SignUpPage() {
 
     setDisabled(true);
     const dataSingUp = {email: email, name: name, password: password, confirmPassword: confirmPassword}
-    axios.post("https://localhost:27017/mywallet/singUp", dataSingUp)
+    axios.post("https://localhost:5000/mywallet/singUp", dataSingUp)
       .then((res) => {
         console.log(res.data);
         setDisabled(false);

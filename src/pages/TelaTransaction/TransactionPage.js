@@ -1,21 +1,44 @@
+import { useContext, useState } from "react";
 import styled from "styled-components";
-import dayjs from "dayjs";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+
+// import dayjs from "dayjs";
 
 export default function TransactionsPage() {
-const dados = {
-  value: "valor",
-  description: "description",
-  day: dayjs().format("DD"/"MM") // setar os dados aqui e usar na tela de mostrar transacoes (usar context)
-}
+  const [value, setValue] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const {token} = useContext(AuthContext);
+
+  function finished(event) {
+    console.log("entrou aqui")
+    event.preventDefault();
+    const config = {
+      headers: {Authorization: `Bearer ${token}`}
+    };
+    const transacao = {value: value, description: description};
+    axios.post(`${process.env.REACT_APP_API_URL}/nova-transacao/:tipo`, transacao, config)
+      .then((res) => {
+        console.log(res)
+        setValue("");
+        setDescription("");
+        navigate("home");        
+      })
+      .catch((err) => console.log(err))
+      console.log("entrou no catch")
+
+  }
 
 
   return (
     <TransactionsContainer>
       <h1>Nova TRANSAÇÃO</h1>
-      <form>
-        <input placeholder="Valor" type="text"/>
-        <input placeholder="Descrição" type="text" />
-        <button>Salvar TRANSAÇÃO</button>
+      <form onSubmit={finished}>
+        <input placeholder="Valor" type="text" onChange={e => setValue(e.target.value)}/>
+        <input placeholder="Descrição" type="text" onChange={e => setDescription(e.target.value)}/>
+        <button type="submit">Salvar TRANSAÇÃO</button>
       </form>
     </TransactionsContainer>
   )
