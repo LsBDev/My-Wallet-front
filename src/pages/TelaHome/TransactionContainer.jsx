@@ -1,19 +1,26 @@
 import styled from "styled-components"
-import TransactionItem from "./TransactionItem.jsx"
 
-export default function TransactionContainer() {
+export default function TransactionContainer(props) {
     // const [saldo, setSaldo] = useState(0)
-    const transactions = [
-      {date: "30/11", description: "Almoço mãe", value: "-120,00"}, 
-      {date: "15/11", description: "Salário", value: "3000,00"},
-      {date: "16/11", description: "Desconto Salário", value: "-2500,00"}
-  ]
+  //   const transactions = [
+  //     {date: "30/11", description: "Almoço mãe", value: "-120,00"}, 
+  //     {date: "15/11", description: "Salário", value: "3000,00"},
+  //     {date: "16/11", description: "Desconto Salário", value: "-2500,00"}
+  // ]
     
     
     return (
         <TransactionsContainer>
         <ul>
-          <TransactionItem transactions={transactions}/>
+          {/* {props.transacoes}.map((op) => 
+            <ListItemContainer>
+              <div>
+                <span>{op.date}</span>
+                <strong>{op.description}</strong>
+              </div>
+              <Value color={parseInt(op.value) < 0 ? "negativo": "positivo"}>{op.value}</Value>
+            </ListItemContainer>
+          ) */}
         </ul>
 
         <article>
@@ -43,9 +50,20 @@ const TransactionsContainer = styled.article`
     }
   }
 `
-
 const Value = styled.div`
   font-size: 16px;
   text-align: right;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
+`
+const ListItemContainer = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  color: #000000;
+  margin-right: 10px;
+  div span {
+    color: #c6c6c6;
+    margin-right: 10px;
+  }
 `
