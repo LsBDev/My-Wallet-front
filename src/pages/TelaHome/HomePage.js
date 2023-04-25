@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { BiExit } from "react-icons/bi";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState} from "react";
 import TransactionContainer from "./TransactionContainer.jsx";
 import AuthContext from "../../contexts/AuthContext.js";
 import axios from "axios"
@@ -10,44 +10,42 @@ import UserContext from "../../contexts/UserContext.js";
 
 export default function HomePage() {
   const {token} = useContext(AuthContext);
-  const [transacoes, setTransacoes] = useState();
-  const {user} = useContext(UserContext);
-
+  const {user, transacoes, setTransacoes} = useContext(UserContext);
+  console.log(user)
   console.log(transacoes)
 
+
   useEffect(() => {
+    console.log("Rodou!")
     const config = {
       headers: {authorization: `Bearer ${token}`}
     };
     axios.get(`${process.env.REACT_APP_API_URL}/home`, config)
       .then((res) => {
+        console.log(res)
         setTransacoes(res.data);
       })
       .catch(err => console.log(err.response.data))
   }, [])
 
-  // const valueList = transactions.map((op) => parseInt(op.value))
-  // let soma = 0;
-  // for(let i = 0; i < valueList.length; i++) {
-  //   soma = soma + valueList[i];
-  // }
+  
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {user}</h1>
+        <h1>Olá, {user.name}</h1>
         <BiExit />
       </Header>
 
-      <TransactionContainer transacoes={transacoes}/>
+      <TransactionContainer />
 
       <ButtonsContainer>
-        <Link to="/nova-transacao/:entrada">
+        <Link to="/nova-transacao/entrada">
           <AiOutlinePlusCircle />
           <p>Nova <br /> entrada</p>
         </Link>
-         <Link to="/nova-transacao/:saida">
+         <Link to="/nova-transacao/saida">
             <AiOutlineMinusCircle />
-            <p>Nova <br />saída</p>        
+            <p>Nova <br />saída</p>    
          </Link>
             
       </ButtonsContainer>
@@ -70,25 +68,11 @@ const Header = styled.header`
   font-size: 26px;
   color: white;
 `
-
 const ButtonsContainer = styled.section`
   margin-top: 15px;
   margin-bottom: 0;
   display: flex;
-  gap: 15px; 
-  
-  /* button {
-    width: 50%;
-    height: 115px;
-    font-size: 22px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    p {
-      font-size: 18px;
-    }
-  } */
+  gap: 15px;
   a {
     width: 50%;
     height: 95px;
@@ -105,8 +89,3 @@ const ButtonsContainer = styled.section`
     }
   }
 `
-// const Value = styled.div`
-//   font-size: 16px;
-//   text-align: right;
-//   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
-// `
