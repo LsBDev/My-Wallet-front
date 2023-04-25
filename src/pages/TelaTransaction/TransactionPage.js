@@ -4,29 +4,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 
-// import dayjs from "dayjs";
-
 export default function TransactionsPage() {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState();
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const {token} = useContext(AuthContext);
 
   function finished(event) {
-    console.log("entrou aqui")
     event.preventDefault();
     const config = {
-      headers: {Authorization: `Bearer ${token}`}
+      headers: {authorization: `Bearer ${token}`}
     };
     const transacao = {value: value, description: description};
-    axios.post(`${process.env.REACT_APP_API_URL}/nova-transacao/:tipo`, transacao, config)
+    axios.post(`${process.env.REACT_APP_API_URL}/nova-transacao/tipo`, transacao, config)
       .then((res) => {
         console.log(res)
         setValue("");
         setDescription("");
         navigate("home");        
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err.response))
       console.log("entrou no catch")
 
   }

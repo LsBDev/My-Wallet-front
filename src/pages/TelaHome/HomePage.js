@@ -13,27 +13,24 @@ export default function HomePage() {
   const [transacoes, setTransacoes] = useState();
   const {user} = useContext(UserContext);
 
+  console.log(transacoes)
 
   useEffect(() => {
     const config = {
-      headers: {Authorization: `Bearer ${token}`}
+      headers: {authorization: `Bearer ${token}`}
     };
     axios.get(`${process.env.REACT_APP_API_URL}/home`, config)
       .then((res) => {
-        setTransacoes(res);
-        console.log(transacoes);
+        setTransacoes(res.data);
       })
       .catch(err => console.log(err.response.data))
   }, [])
-
 
   // const valueList = transactions.map((op) => parseInt(op.value))
   // let soma = 0;
   // for(let i = 0; i < valueList.length; i++) {
   //   soma = soma + valueList[i];
   // }
-
-
   return (
     <HomeContainer>
       <Header>
@@ -41,7 +38,7 @@ export default function HomePage() {
         <BiExit />
       </Header>
 
-      <TransactionContainer/>
+      <TransactionContainer transacoes={transacoes}/>
 
       <ButtonsContainer>
         <Link to="/nova-transacao/:entrada">
