@@ -24,7 +24,7 @@ export default function SignInPage() {
         if(res.data.statusCode === 404) return console.log("E-mail não cadastrado!");
         setDisabled(false);
         setToken(res.data.token);
-        setUser(res.data.name);
+        setUser(res.data);
         navigate("/home");
       })
       .catch((err) => {

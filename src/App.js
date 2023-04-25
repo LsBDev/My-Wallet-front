@@ -11,12 +11,13 @@ import UserContext from "./contexts/UserContext"
 export default function App() {
   const [token, setToken] = useState("");
   const [user, setUser] = useState("");
+  const [transacoes, setTransacoes] = useState([]);
   // o usuário tb por contexto e qq outra coisa necessária
   
 
   return (
     <AuthContext.Provider value={{ token, setToken }}>
-      <UserContext.Provider value={{user, setUser}}> 
+      <UserContext.Provider value={{user, setUser, transacoes, setTransacoes}}>
         <PagesContainer>
           <BrowserRouter>
             <Routes>
