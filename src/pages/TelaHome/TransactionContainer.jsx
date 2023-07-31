@@ -1,34 +1,42 @@
-import { useContext, useState } from "react"
+import { useContext } from "react"
 import styled from "styled-components"
 import UserContext from "../../contexts/UserContext"
+import dayjs from "dayjs";
+import {Circles} from "react-loader-spinner"
 
 
 export default function TransactionContainer() {
   const {transacoes} = useContext(UserContext);
-  
 
-  console.log(transacoes) 
+  function total() {
+    const soma = transacoes.reduce((acc, cur) => cur.type === "income" ? acc + cur.value : acc - cur.value, 0)
+    return soma.toFixed(2)
+  }
+  const balance = total()
     
-    return (
-      <TransactionsContainer>
-      <ul>
-      {transacoes.map((op) =>
-          <ListItemContainer>
-            <div>
-              <span>{op.date}</span>
-              <strong>{op.description}</strong>
-            </div>
-            <Value color={parseInt(op.value) < 0 ? "negativo": "positivo"}>{op.value}</Value>
-          </ListItemContainer>
-        )}
-      </ul>
-
-      <article>
-        <strong>Saldo</strong>
-        <Value color={"positivo"}>00,00</Value>
-      </article>
-    </TransactionsContainer>
-    )
+  return (
+    <TransactionsContainer>
+      {!transacoes ? <Circles/> : transacoes.length === 0 ? <p>Não há registros</p>: 
+        <ul>
+          {transacoes.map((op) =>
+            <ListItemContainer>
+              <div>
+                <span>{dayjs(op.date).format("DD/MM")}</span>
+                <strong>{op.description}</strong>
+              </div>
+              <Value color={op.type === "income" ? "positivo": "negativo"}>
+                {op.value.toFixed(2).toString().replace(".", ",")}
+              </Value>
+            </ListItemContainer>
+          )}
+        </ul>
+      }
+    <article>
+      <strong>Saldo</strong>
+      <Value color={balance >= 0 ? "positivo" : "negativo"}>{balance.toString().replace(".", ",")}</Value>
+    </article>
+  </TransactionsContainer>
+  )
 }
 
 
@@ -43,9 +51,19 @@ const TransactionsContainer = styled.article`
   justify-content: space-between;
   overflow-y: scroll;
   overflow-x: hidden;
+  ul {
+    overflow-y: auto;
+    scrollbar-width: none;
+    ::-webkit-scrollbar {
+      width: 0px;
+      background: transparent;
+    }
+  }
   article {
     display: flex;
-    justify-content: space-between;   
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid lightgray;
     strong {
       font-weight: 700;
       text-transform: uppercase;
@@ -53,15 +71,16 @@ const TransactionsContainer = styled.article`
   }
 `
 const Value = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   text-align: right;
+  font-weight: 600;
   color: ${(props) => (props.color === "positivo" ? "green" : "red")};
 `
 const ListItemContainer = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   color: #000000;
   margin-right: 10px;
   div span {
