@@ -1,39 +1,55 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiExit } from "react-icons/bi";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
-import { useContext, useEffect, useState} from "react";
+import { useContext, useEffect} from "react";
 import TransactionContainer from "./TransactionContainer.jsx";
 import AuthContext from "../../contexts/AuthContext.js";
 import axios from "axios"
 import UserContext from "../../contexts/UserContext.js";
+import { useQuickOut } from "../../hooks/useQuickOut.js";
 
 export default function HomePage() {
-  const {token} = useContext(AuthContext);
-  const {user, transacoes, setTransacoes} = useContext(UserContext);
-  console.log(user)
-  console.log(transacoes)
+  const {token, setToken} = useContext(AuthContext);
+  const {user, setUser, setTransacoes} = useContext(UserContext);
+  const navigate = useNavigate()
+  useQuickOut()
 
 
-  useEffect(() => {
-    console.log("Rodou!")
+  useEffect(() => {    
     const config = {
       headers: {authorization: `Bearer ${token}`}
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/home`, config)
+    axios.get(`${process.env.REACT_APP_API_URL}/transactions`, config)
       .then((res) => {
         console.log(res)
         setTransacoes(res.data);
       })
       .catch(err => console.log(err.response.data))
-  }, [])
+  }, [setTransacoes, token])
+
+  function logOut() {
+    const config = {headers: {authorization: `Bearer ${token}`}}
+    axios.post(`${process.env.REACT_APP_API_URL}/signOut`, {}, config)
+    .then((res) => {
+      console.log(res.data)
+      setToken("")
+      setUser("")
+      localStorage.clear()
+      navigate("/")
+    })
+    .catch((err) => {
+      console.log(err)
+      alert(err.response.data)
+    })    
+  }
 
   
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {user.name}</h1>
-        <BiExit />
+        <h1>Olá, {user}</h1>
+        <BiExit onClick={logOut}/>
       </Header>
 
       <TransactionContainer />
@@ -41,11 +57,11 @@ export default function HomePage() {
       <ButtonsContainer>
         <Link to="/nova-transacao/entrada">
           <AiOutlinePlusCircle />
-          <p>Nova <br /> entrada</p>
+          <p>Nova <br/>entrada</p>
         </Link>
          <Link to="/nova-transacao/saida">
             <AiOutlineMinusCircle />
-            <p>Nova <br />saída</p>    
+            <p>Nova <br/>saída</p>    
          </Link>
             
       </ButtonsContainer>

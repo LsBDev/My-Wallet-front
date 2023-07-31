@@ -5,6 +5,7 @@ import { useContext, useState } from "react"
 import axios from "axios";
 import AuthContext from "../../contexts/AuthContext.js";
 import UserContext from "../../contexts/UserContext.js";
+import { useQuickIn } from "../../hooks/useQuickIn.js";
 
 export default function SignInPage() {
   const navigate = useNavigate();
@@ -14,21 +15,26 @@ export default function SignInPage() {
   const {setToken} = useContext(AuthContext);
   const {setUser} = useContext(UserContext);
 
+  useQuickIn()
+
   function login(event) {
     event.preventDefault();
     setDisabled(true);
     const user = {email: email, password: password};
     axios.post(`${process.env.REACT_APP_API_URL}/signIn`, user)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         if(res.data.statusCode === 404) return console.log("E-mail não cadastrado!");
         setDisabled(false);
         setToken(res.data.token);
-        setUser(res.data);
+        setUser(res.data.userName);
+        localStorage.setItem("token", res.data.token)
+        localStorage.setItem("user", res.data.userName)
         navigate("/home");
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response.data);
+        alert(err.response.data);
         setDisabled(false);
       })
   }
