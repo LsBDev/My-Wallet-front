@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiExit } from "react-icons/bi";
 import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
 import { useContext, useEffect, useState} from "react";
@@ -7,20 +7,19 @@ import TransactionContainer from "./TransactionContainer.jsx";
 import AuthContext from "../../contexts/AuthContext.js";
 import axios from "axios"
 import UserContext from "../../contexts/UserContext.js";
+import { useQuickOut } from "../../hooks/useQuickOut.js";
 
 export default function HomePage() {
   const {token} = useContext(AuthContext);
-  const {user, transacoes, setTransacoes} = useContext(UserContext);
-  console.log(user)
-  console.log(transacoes)
+  const {user, setTransacoes} = useContext(UserContext);
+  useQuickOut()
 
 
-  useEffect(() => {
-    console.log("Rodou!")
+  useEffect(() => {    
     const config = {
       headers: {authorization: `Bearer ${token}`}
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/home`, config)
+    axios.get(`${process.env.REACT_APP_API_URL}/transactions`, config)
       .then((res) => {
         console.log(res)
         setTransacoes(res.data);
@@ -32,7 +31,7 @@ export default function HomePage() {
   return (
     <HomeContainer>
       <Header>
-        <h1>Olá, {user.name}</h1>
+        <h1>Olá, {user}</h1>
         <BiExit />
       </Header>
 

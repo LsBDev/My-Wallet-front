@@ -9,8 +9,8 @@ import AuthContext from "./contexts/AuthContext"
 import UserContext from "./contexts/UserContext"
 
 export default function App() {
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(localStorage.getItem("user"));
   const [transacoes, setTransacoes] = useState([]);
   // o usuário tb por contexto e qq outra coisa necessária
   

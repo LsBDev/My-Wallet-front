@@ -3,12 +3,14 @@ import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
+import { useQuickOut } from "../../hooks/useQuickOut";
 
 export default function TransactionsPage() {
   const [value, setValue] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
   const {token} = useContext(AuthContext);
+  useQuickOut()
 
   function finished(event) {
     event.preventDefault();

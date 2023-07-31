@@ -3,6 +3,7 @@ import styled from "styled-components"
 import MyWalletLogo from "../../components/MyWalletLogo.jsx"
 import { useState } from "react";
 import axios from "axios";
+import { useQuickIn } from "../../hooks/useQuickIn.js";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState();
@@ -10,7 +11,9 @@ export default function SignUpPage() {
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
   const [disabled, setDisabled] = useState(false);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
+
+  useQuickIn()
 
 
   function register(event) {
@@ -20,10 +23,9 @@ export default function SignUpPage() {
     }
 
     setDisabled(true);
-    const dataSingUp = {email: email, name: name, password: password, confirmPassword: confirmPassword}
-    axios.post("https://localhost:5000/mywallet/singUp", dataSingUp)
+    const dataSingUp = {email: email, name: name, password: password}
+    axios.post(`${process.env.REACT_APP_API_URL}/signUp`, dataSingUp)
       .then((res) => {
-        console.log(res.data);
         setDisabled(false);
         navigate("/");
       })
@@ -39,7 +41,7 @@ export default function SignUpPage() {
         <MyWalletLogo />
         <input placeholder="Nome" type="text" value={name} onChange={e => setName(e.target.value)} disabled={disabled} required />
         <input placeholder="E-mail" type="email" value={email} onChange={e => setEmail(e.target.value)} disabled={disabled} required/>
-        <input placeholder="Senha" type="password" value={password} autocomplete="new-password" onChange={e => setPassword(e.target.value)} disabled={disabled} required />
+        <input placeholder="Senha" minLength={6} type="password" value={password} autocomplete="new-password" onChange={e => setPassword(e.target.value)} disabled={disabled} required />
         <input placeholder="Confirme a senha" type="password" value={confirmPassword} autocomplete="new-password"  onChange={e => setConfirmPassword(e.target.value)} disabled={disabled} required />
         <button type="submit">Cadastrar</button>
       </form>
