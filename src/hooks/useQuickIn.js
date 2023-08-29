@@ -11,5 +11,5 @@ export function useQuickIn() {
 
   useEffect(() => {
     if(token || user) navigate("/home")
-  }, [])
+  }, [user, token, navigate])
 }

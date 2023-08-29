@@ -46,9 +46,9 @@ export default function SignUpPage() {
         <button type="submit">Cadastrar</button>
       </form>
 
-      <Link to="/">
+      <Login to="/">
         Já tem uma conta? Entre agora!
-      </Link>
+      </Login>
     </SingUpContainer>
   )
 }
@@ -60,3 +60,8 @@ const SingUpContainer = styled.section`
   justify-content: center;
   align-items: center;
 `
+
+const Login = styled(Link)`
+  margin-top: 15px;
+`
+
