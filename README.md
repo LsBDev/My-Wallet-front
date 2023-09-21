@@ -1,8 +1,10 @@
-# Getting Started with Create React App
+# My Wallet
+https://github.com/LsBDev/My-Wallet-front/blob/main/LICENSE
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O My Wallet é uma aplicação de carteira digital projetada para ajudar você a gerenciar suas finanças pessoais com facilidade. Com recursos de criação de cadastro, login e acompanhamento de entradas e saídas de gastos e receitas, o My Wallet oferece uma solução completa para o controle de suas finanças.
 
 ## Available Scripts
+
 
 In the project directory, you can run:
 
